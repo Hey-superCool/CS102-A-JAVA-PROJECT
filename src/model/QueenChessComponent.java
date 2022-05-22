@@ -221,8 +221,10 @@ public class QueenChessComponent extends ChessComponent{
         g.drawImage(queenImage, 0, 0, getWidth() , getHeight(), this);
         g.setColor(Color.BLACK);
         if (isSelected()) { // Highlights the model if selected.
-            g.setColor(Color.RED);
-            g.drawOval(0, 0, getWidth() , getHeight());
+            g.setColor(new Color(108,153,153,150));
+            g.fillRect(0, 0, getWidth() , getHeight());
+            g.drawImage(queenImage, -7, -7, getWidth()+14 , getHeight()+14, this);
+            g.setColor(Color.BLACK);
         }
     }
 }
