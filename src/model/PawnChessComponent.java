@@ -76,10 +76,11 @@ public class PawnChessComponent extends ChessComponent{
         @Override
         public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
             ChessboardPoint source = getChessboardPoint();
+            System.out.println("kais");
             List<ChessboardPoint> Pawn = new ArrayList<>();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (source.getX() == 1) {
+                    if (source.getX() == 1&&this.chessColor==ChessColor.BLACK) {
                         if ((i - source.getX() == 1 || i - source.getX() == 2) && source.getY() == j &&
                                 chessComponents[i][j].getChessColor() == ChessColor.NONE) {
                             ChessboardPoint n = new ChessboardPoint(i, j);
@@ -91,7 +92,7 @@ public class PawnChessComponent extends ChessComponent{
                             ChessboardPoint n = new ChessboardPoint(i, j);
                             Pawn.add(n);//chizizouyibu
                         }
-                    } else if (source.getX() == 6) {
+                    } else if (source.getX() == 6&&this.chessColor==ChessColor.WHITE) {
                         if ((source.getX() - i == 1 || source.getX() - i == 2) && source.getY() == j &&
                                 chessComponents[i][j].getChessColor() == ChessColor.NONE) {
                             ChessboardPoint n = new ChessboardPoint(i, j);
@@ -117,7 +118,7 @@ public class PawnChessComponent extends ChessComponent{
                         }
 
                     } else if (this.getChessColor() == ChessColor.BLACK) {
-                        if (i - source.getX() == 1 && source.getY() == j &&
+                        if (i -   source.getX() == 1 && source.getY() == j &&
                                 chessComponents[i][j].getChessColor() == ChessColor.NONE) {
                             ChessboardPoint n = new ChessboardPoint(i, j);
                             Pawn.add(n);//buchiziqiekeyizouliangbu
@@ -131,13 +132,19 @@ public class PawnChessComponent extends ChessComponent{
                     }
                 }
             }
+
                 for (int i = 0; i < Pawn.size(); i++) {
                     if (destination.getX() == Pawn.get(i).getX() && destination.getY() == Pawn.get(i).getY()) {
+                        System.out.println("kyizou");
+
                         return true;
                     }
                 }
+            System.out.println("bky");
                 return false;
             }
+
+
         /**
          * 注意这个方法，每当窗体受到了形状的变化，或者是通知要进行绘图的时候，就会调用这个方法进行画图。
          *

@@ -1,5 +1,6 @@
 package model;
 
+import view.Chessboard;
 import view.ChessboardPoint;
 import controller.ClickController;
 
@@ -22,7 +23,7 @@ public abstract class ChessComponent extends JComponent {
      */
 
 //    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
-    private static final Color[] BACKGROUND_COLORS = {new Color(255,255,255,150), new Color(0,0,0,150)};
+    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
     /**
      * handle click event
      */
@@ -121,5 +122,12 @@ public abstract class ChessComponent extends JComponent {
         Color squareColor = BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
         g.setColor(squareColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
+    public boolean win(ChessboardPoint destination,ChessComponent[][]chessComponents){
+        if (chessComponents[destination.getX()][destination.getY()] instanceof KingChessComponent&&
+                chessComponents[destination.getX()][destination.getY()].getChessColor()!=this.getChessColor()){
+            return true;
+        }
+        return false;
     }
 }
