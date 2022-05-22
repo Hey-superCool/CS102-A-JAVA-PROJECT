@@ -2,6 +2,7 @@ package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,6 +17,17 @@ public class PictureDrawer extends JPanel {
             this.image = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setImage() throws IOException {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter fliter = new FileNameExtensionFilter("图片文件", "jpg", "jpeg", "png");
+        chooser.setFileFilter(fliter);
+        int ret = chooser.showOpenDialog(this);
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            this.image = ImageIO.read(file);
         }
     }
 
