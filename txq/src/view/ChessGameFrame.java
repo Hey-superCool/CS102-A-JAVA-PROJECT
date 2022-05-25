@@ -1,5 +1,6 @@
 package view;
 
+import controller.ClickController;
 import controller.GameController;
 import model.ChessColor;
 
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -20,16 +22,18 @@ public class ChessGameFrame extends JFrame {
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
     private Chessboard chessboard;
+    private ClickController clickController;
+    private PictureDrawer pictureDrawer;
 
 
-    public ChessGameFrame(int width, int height) {
+    public ChessGameFrame(int width, int height, PictureDrawer pictureDrawer,Chessboard chessboard) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
         setTitle("2022 CS102A Project Demo"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
         this.CHESSBOARD_SIZE = HEIGTH * 4 / 5;
-        PictureDrawer pictureDrawer = new PictureDrawer();
         pictureDrawer.setSize(760, 760);
+        this.pictureDrawer = pictureDrawer;
 
         setSize(WIDTH, HEIGTH);
         setLocationRelativeTo(null); // Center the window.
@@ -41,6 +45,7 @@ public class ChessGameFrame extends JFrame {
 //        addHelloButton();
         addResetButton();
         addLoadButton();
+        addSaveButton();
         add(pictureDrawer);
     }
 
@@ -50,6 +55,7 @@ public class ChessGameFrame extends JFrame {
     private void addChessboard() {
         Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         this.chessboard = chessboard;
+        setClickController(new ClickController(this.chessboard));
         gameController = new GameController(chessboard);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
@@ -94,7 +100,7 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("Reset");
         button.addActionListener((e) -> {
             SwingUtilities.invokeLater(() -> {
-                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760);
+                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760,pictureDrawer,chessboard);
                 mainFrame.setVisible(true);
                 this.setVisible(false);
             });
@@ -108,7 +114,7 @@ public class ChessGameFrame extends JFrame {
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会
      */
-
+    //此处应该调用完成后的load方法
     private void addLoadButton() {
         JButton button = new JButton("Load");
         button.setLocation(HEIGTH, HEIGTH / 10 + 240);
@@ -119,8 +125,46 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener(e -> {
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this, "Input Path here");
-            gameController.loadGameFromFile(path);
+            try {
+                this.chessboard = chessboard.loadChessboard(path);
+                System.out.println(chessboard.save(chessboard.getChessComponents()));
+                this.setVisible(false);
+                ChessGameFrame newChessGameFrame = new ChessGameFrame(1000,760,pictureDrawer,chessboard);
+                newChessGameFrame.setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
     }
+    //下面是存档按钮
+
+    private void addSaveButton(){
+        JButton button = new JButton("Save");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 320);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            Chessboard.saveAsFileWriter(chessboard.save(chessboard.getChessComponents()));//调用当前棋盘的存储方法
+        });
+    }
+
+    public Chessboard getChessboard() {
+        return chessboard;
+    }
+
+    public void setChessboard(Chessboard chessboard) {
+        this.chessboard = chessboard;
+    }
+
+    public ClickController getClickController() {
+        return clickController;
+    }
+
+    public void setClickController(ClickController clickController) {
+        this.clickController = clickController;
+    }
+
 
 }

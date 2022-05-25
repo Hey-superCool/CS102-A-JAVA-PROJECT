@@ -6,6 +6,8 @@ import controller.ClickController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -55,8 +57,8 @@ public class Chessboard extends JComponent {
         initRookOnBoard(0, CHESSBOARD_SIZE - 1, ChessColor.BLACK);
         initRookOnBoard(CHESSBOARD_SIZE - 1, 0, ChessColor.WHITE);
         initRookOnBoard(CHESSBOARD_SIZE - 1, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
-        initKingOnBoard(0, 3, ChessColor.BLACK);
-        initKingOnBoard(7, 3, ChessColor.WHITE);
+        initKingOnBoard(0, 4, ChessColor.BLACK);
+        initKingOnBoard(7, 4, ChessColor.WHITE);
         initPawnOnBoard(1, 0, ChessColor.BLACK);
         initPawnOnBoard(1, 1, ChessColor.BLACK);
         initPawnOnBoard(1, 2, ChessColor.BLACK);
@@ -81,8 +83,8 @@ public class Chessboard extends JComponent {
         initBishopOnBoard(7, 2, ChessColor.WHITE);
         initBishopOnBoard(0, 5, ChessColor.BLACK);
         initBishopOnBoard(7, 5, ChessColor.WHITE);
-        initQueenOnBoard(0, 4, ChessColor.BLACK);
-        initQueenOnBoard(7, 4, ChessColor.WHITE);
+        initQueenOnBoard(0, 3, ChessColor.BLACK);
+        initQueenOnBoard(7, 3, ChessColor.WHITE);
 
 
     }
@@ -93,6 +95,10 @@ public class Chessboard extends JComponent {
 
     public ChessColor getCurrentColor() {
         return currentColor;
+    }
+
+    public void setCurrentColor(ChessColor currentColor) {
+        this.currentColor = currentColor;
     }
 
     public void putChessOnBoard(ChessComponent chessComponent) {
@@ -187,11 +193,165 @@ public class Chessboard extends JComponent {
     }
 
 
-    private Point calculatePoint(int row, int col) {
+    private Point calculatePoint(int row, int col) {//保存为string格式
         return new Point(col * CHESS_SIZE, row * CHESS_SIZE);
     }
+    public String save(ChessComponent[][] chessComponents){
+       StringBuilder m = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (chessComponents[i][j] instanceof EmptySlotComponent){
+                    m.append("_");
+                }
+                else if (chessComponents[i][j] instanceof QueenChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("q");
+                    }
+                    else {
+                        m.append("Q");
+                    }
+                }
+                else if (chessComponents[i][j] instanceof KingChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("k");
+                    }
+                    else {
+                        m.append("K");
+                    }
+                }
+                else if (chessComponents[i][j] instanceof KnightChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("n");
+                    }
+                    else {
+                        m.append("N");
+                    }
+                }
+                else if (chessComponents[i][j] instanceof RookChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("r");
+                    }
+                    else {
+                        m.append("R");
+                    }
+                }
+                else if (chessComponents[i][j] instanceof BishopChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("b");
+                    }
+                    else {
+                        m.append("B");
+                    }
+                }
+                else if (chessComponents[i][j] instanceof PawnChessComponent){
+                    if (chessComponents[i][j].getChessColor()==ChessColor.WHITE){
+                        m.append("p");
+                    }
+                    else {
+                        m.append("P");
+                    }
+                }
+            }
+        }
+        if (getCurrentColor()==ChessColor.WHITE){
+            m.append("w");
+        }else {
+            m.append("b");
+        }
+        return m.toString();
+    }
+    public static int saveChess=0;
+    public static void saveAsFileWriter(String content) {
+        String a="D:\\txq\\Chessboard"+saveChess+".txt";//这是文件路径
+        FileWriter fwriter = null;
+        try {//存储为txt的方法
+            fwriter = new FileWriter(a);
+            fwriter.write(content);
+            saveChess++;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                fwriter.flush();
+                fwriter.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+//    public static String read(String src)throws IOException{
+////        String src ="D:\\txq\\Chessboard"+saveChess+".txt";
+//        File file = new File(src);
+//        FileReader fileReader = new FileReader(file);
+//        BufferedReader br = new BufferedReader(fileReader);
+//        StringBuilder sb = new StringBuilder();
+//        String temp = "";
+//        while ((temp = br.readLine()) != null) {
+//            sb.append(temp);
+//        }
+//        br.close();
+//        String js = sb.toString();
+//        return js;
+//    }
+    public Chessboard loadChessboard(String src) throws IOException {
+        File file = new File(src);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader br = new BufferedReader(fileReader);
+        StringBuilder sb = new StringBuilder();
+        String temp = "";
+        while ((temp = br.readLine()) != null) {
+            sb.append(temp);
+        }
+        br.close();
+        String js = sb.toString();
+        Chessboard m = new Chessboard(760,760);
+        m.initiateEmptyChessboard();
+        char[] n = js.toCharArray();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                switch (n[8*i+j]){
+                    case 'k':
+                        m.initKingOnBoard(i,j,ChessColor.WHITE);
+                    case 'K':
+                        m.initKingOnBoard(i,j,ChessColor.BLACK);
+                    case 'n':
+                       m.initKnightOnBoard(i,j,ChessColor.WHITE);
+                    case 'N':
+                        m.initKnightOnBoard(i,j,ChessColor.BLACK);
+                    case 'b':
+                        m.initBishopOnBoard(i,j,ChessColor.WHITE);
+                    case 'B':
+                        m.initBishopOnBoard(i,j,ChessColor.BLACK);
+                    case 'q':
+                        m.initQueenOnBoard(i,j,ChessColor.WHITE);
+                    case 'Q':
+                        m.initQueenOnBoard(i,j,ChessColor.BLACK);
+                    case 'r':
+                        m.initRookOnBoard(i,j,ChessColor.WHITE);
+                    case 'R':
+                        m.initRookOnBoard(i,j,ChessColor.BLACK);
+                    case 'p':
+                        m.initPawnOnBoard(i,j,ChessColor.WHITE);
+                    case 'P':
+                        m.initPawnOnBoard(i,j,ChessColor.BLACK);
+                }
+            }
 
-    public void loadGame(List<String> chessData) {
-        chessData.forEach(System.out::println);
+        }
+        if (n[n.length-1]=='w'){
+            this.setCurrentColor(ChessColor.WHITE);
+        }
+        else {
+            this.setCurrentColor(ChessColor.BLACK);
+        }
+        return m;
     }
 }
+
+
+//    public void loadGame(String js)  {
+//
+//        //这里需要加载成棋盘
+////        chessData.forEach(System.out::println);
+//    }
+//}

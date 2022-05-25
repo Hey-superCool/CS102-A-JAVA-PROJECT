@@ -3,6 +3,7 @@ package controller;
 
 import model.ChessComponent;
 import view.Chessboard;
+import view.GameOverFrame;
 
 public class ClickController {
     private final Chessboard chessboard;
@@ -11,6 +12,7 @@ public class ClickController {
     public ClickController(Chessboard chessboard) {
         this.chessboard = chessboard;
     }
+    
 
     public void onClick(ChessComponent chessComponent) {
         if (first == null) {
@@ -27,11 +29,13 @@ public class ClickController {
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
                 //repaint in swap chess method.
-                chessboard.win(chessComponent.getChessboardPoint(), chessboard.getChessComponents());
+                if (chessboard.win(chessComponent.getChessboardPoint(), chessboard.getChessComponents())){
+                    GameOverFrame a = new GameOverFrame(500,500,chessboard.getCurrentColor());
+                    a.setVisible(true);
+                }
                 chessboard.swapChessComponents(first, chessComponent);
                 chessboard.swapColor();
                 chessboard.setViewCurrentPlayer(chessboard.getCurrentColor());
-
 
                 first.setSelected(false);
                 first = null;
