@@ -1,5 +1,6 @@
 package view;
 
+import controller.ClickController;
 import controller.GameController;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class SelectionFrame extends JFrame {
         JButton button = new JButton("Start");
         button.addActionListener((e) -> {
             SwingUtilities.invokeLater(() -> {
-                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760);
+                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760,this.getPictureDrawer());
                 mainFrame.setVisible(true);
                 this.setVisible(false);
             });
@@ -65,5 +66,9 @@ public class SelectionFrame extends JFrame {
         button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
+    }
+
+    public PictureDrawer getPictureDrawer() {
+        return pictureDrawer;
     }
 }
