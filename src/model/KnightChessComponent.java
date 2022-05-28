@@ -57,17 +57,7 @@ public class KnightChessComponent extends ChessComponent{
         super(chessboardPoint, location, color, listener, size);
         initiateKnightImage(color);
     }
-
-    /**
-     * 车棋子的移动规则
-     *
-     * @param chessComponents 棋盘
-     * @param destination     目标位置，如(0, 0), (0, 7)等等
-     * @return 车棋子移动的合法性
-     */
-
-    @Override
-    public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
+    public List<ChessboardPoint> points(ChessComponent[][] chessComponents){
         ChessboardPoint source = getChessboardPoint();
         List<ChessboardPoint> Knight = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -85,8 +75,30 @@ public class KnightChessComponent extends ChessComponent{
                 }
             }
         }
-        for (int i = 0; i < Knight.size(); i++) {
-            if (destination.getX()==Knight.get(i).getX()&&destination.getY()==Knight.get(i).getY()){
+        return Knight;
+    }
+    public boolean alarm (ChessComponent[][]chessComponents){
+        for (int i = 0; i < points(chessComponents).size(); i++) {
+            if (chessComponents[points(chessComponents).get(i).getX()][points(chessComponents).get(i).getY()] instanceof KingChessComponent ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 车棋子的移动规则
+     *
+     * @param chessComponents 棋盘
+     * @param destination     目标位置，如(0, 0), (0, 7)等等
+     * @return 车棋子移动的合法性
+     */
+
+    @Override
+
+    public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
+        for (int i = 0; i < points(chessComponents).size(); i++) {
+            if (destination.getX()==points(chessComponents).get(i).getX()&&destination.getY()==points(chessComponents).get(i).getY()){
                 return true;
             }
         }
@@ -107,7 +119,7 @@ public class KnightChessComponent extends ChessComponent{
         if (isSelected()) { // Highlights the model if selected.
             g.setColor(new Color(108,153,153,150));
             g.fillRect(0, 0, getWidth() , getHeight());
-            g.drawImage(knightImage, -7, -7, getWidth()+14 , getHeight()+14, this);
+            g.drawImage(knightImage, -10, -10, getWidth()+20 , getHeight()+20, this);
             g.setColor(Color.BLACK);
         }
     }

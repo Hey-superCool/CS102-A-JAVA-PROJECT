@@ -41,7 +41,7 @@ public class SelectionFrame extends JFrame {
         JButton button = new JButton("Start");
         button.addActionListener((e) -> {
             SwingUtilities.invokeLater(() -> {
-                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760,this.getPictureDrawer());
+                ChessGameFrame mainFrame = new ChessGameFrame(1000, 760,this.getPictureDrawer(),new Chessboard(608,608));
                 mainFrame.setVisible(true);
                 this.setVisible(false);
             });

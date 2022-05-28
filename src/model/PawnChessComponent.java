@@ -64,6 +64,73 @@ public class PawnChessComponent extends ChessComponent{
             super(chessboardPoint, location, color, listener, size);
             initiatePawnImage(color);
         }
+    public List<ChessboardPoint> points(ChessComponent[][] chessComponents){
+        ChessboardPoint source = getChessboardPoint();
+        List<ChessboardPoint> Pawn = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (source.getX() == 1&&this.chessColor==ChessColor.BLACK) {
+                    if ((i - source.getX() == 1 || i - source.getX() == 2) && source.getY() == j &&
+                            chessComponents[i][j].getChessColor() == ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//buchiziqiekeyizouliangbu
+                    }
+                    if (i - source.getX() == 1 && Math.abs(source.getY() - j) == 1 &&
+                            chessComponents[i][j].getChessColor() != this.getChessColor() &&
+                            chessComponents[i][j].getChessColor() != ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//chizizouyibu
+                    }
+                } else if (source.getX() == 6&&this.chessColor==ChessColor.WHITE) {
+                    if ((source.getX() - i == 1 || source.getX() - i == 2) && source.getY() == j &&
+                            chessComponents[i][j].getChessColor() == ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//buchiziqiekeyizouliangbu
+                    }
+                    if (source.getX() - i == 1 && Math.abs(source.getY() - j) == 1 &&
+                            chessComponents[i][j].getChessColor() != this.getChessColor() &&
+                            chessComponents[i][j].getChessColor() != ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//chizizouyibu
+                    }
+                } else if (this.getChessColor() == ChessColor.WHITE) {
+                    if (source.getX() - i == 1 && source.getY() == j &&
+                            chessComponents[i][j].getChessColor() == ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//buchiziqiekeyizouliangbu
+                    }
+                    if (source.getX() - i == 1 && Math.abs(source.getY() - j) == 1 &&
+                            chessComponents[i][j].getChessColor() != this.getChessColor() &&
+                            chessComponents[i][j].getChessColor() != ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//chizizouyibu
+                    }
+
+                } else if (this.getChessColor() == ChessColor.BLACK) {
+                    if (i -   source.getX() == 1 && source.getY() == j &&
+                            chessComponents[i][j].getChessColor() == ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//buchiziqiekeyizouliangbu
+                    }
+                    if (i - source.getX() == 1 && Math.abs(source.getY() - j) == 1 &&
+                            chessComponents[i][j].getChessColor() != this.getChessColor() &&
+                            chessComponents[i][j].getChessColor() != ChessColor.NONE) {
+                        ChessboardPoint n = new ChessboardPoint(i, j);
+                        Pawn.add(n);//chizizouyibu
+                    }
+                }
+            }
+        }
+        return Pawn;
+    }
+    public boolean alarm (ChessComponent[][]chessComponents){
+        for (int i = 0; i < points(chessComponents).size(); i++) {
+            if (chessComponents[points(chessComponents).get(i).getX()][points(chessComponents).get(i).getY()] instanceof KingChessComponent ) {
+                return true;
+            }
+        }
+        return false;
+    }
 
         /**
          * 车棋子的移动规则
@@ -75,72 +142,14 @@ public class PawnChessComponent extends ChessComponent{
 
         @Override
         public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-            ChessboardPoint source = getChessboardPoint();
-            System.out.println("kais");
-            List<ChessboardPoint> Pawn = new ArrayList<>();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (source.getX() == 1&&this.chessColor==ChessColor.BLACK) {
-                        if ((i - source.getX() == 1 || i - source.getX() == 2) && source.getY() == j &&
-                                chessComponents[i][j].getChessColor() == ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//buchiziqiekeyizouliangbu
-                        }
-                        if (i - source.getX() == 1 && Math.abs(source.getY() - j) == 1 &&
-                                chessComponents[i][j].getChessColor() != this.getChessColor() &&
-                                chessComponents[i][j].getChessColor() != ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//chizizouyibu
-                        }
-                    } else if (source.getX() == 6&&this.chessColor==ChessColor.WHITE) {
-                        if ((source.getX() - i == 1 || source.getX() - i == 2) && source.getY() == j &&
-                                chessComponents[i][j].getChessColor() == ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//buchiziqiekeyizouliangbu
-                        }
-                        if (source.getX() - i == 1 && Math.abs(source.getY() - j) == 1 &&
-                                chessComponents[i][j].getChessColor() != this.getChessColor() &&
-                                chessComponents[i][j].getChessColor() != ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//chizizouyibu
-                        }
-                    } else if (this.getChessColor() == ChessColor.WHITE) {
-                        if (source.getX() - i == 1 && source.getY() == j &&
-                                chessComponents[i][j].getChessColor() == ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//buchiziqiekeyizouliangbu
-                        }
-                        if (source.getX() - i == 1 && Math.abs(source.getY() - j) == 1 &&
-                                chessComponents[i][j].getChessColor() != this.getChessColor() &&
-                                chessComponents[i][j].getChessColor() != ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//chizizouyibu
-                        }
 
-                    } else if (this.getChessColor() == ChessColor.BLACK) {
-                        if (i -   source.getX() == 1 && source.getY() == j &&
-                                chessComponents[i][j].getChessColor() == ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//buchiziqiekeyizouliangbu
-                        }
-                        if (i - source.getX() == 1 && Math.abs(source.getY() - j) == 1 &&
-                                chessComponents[i][j].getChessColor() != this.getChessColor() &&
-                                chessComponents[i][j].getChessColor() != ChessColor.NONE) {
-                            ChessboardPoint n = new ChessboardPoint(i, j);
-                            Pawn.add(n);//chizizouyibu
-                        }
-                    }
-                }
-            }
 
-                for (int i = 0; i < Pawn.size(); i++) {
-                    if (destination.getX() == Pawn.get(i).getX() && destination.getY() == Pawn.get(i).getY()) {
-                        System.out.println("kyizou");
+                for (int i = 0; i < points(chessComponents).size(); i++) {
+                    if (destination.getX() == points(chessComponents).get(i).getX() && destination.getY() == points(chessComponents).get(i).getY()) {
 
                         return true;
                     }
                 }
-            System.out.println("bky");
                 return false;
             }
 
@@ -159,7 +168,7 @@ public class PawnChessComponent extends ChessComponent{
             if (isSelected()) { // Highlights the model if selected.
                 g.setColor(new Color(108,153,153,150));
                 g.fillRect(0, 0, getWidth() , getHeight());
-                g.drawImage(pawnImage, -7, -7, getWidth()+14 , getHeight()+14, this);
+                g.drawImage(pawnImage, -10, -10, getWidth()+20 , getHeight()+20, this);
                 g.setColor(Color.BLACK);
             }
         }

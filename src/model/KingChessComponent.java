@@ -63,7 +63,28 @@ public class KingChessComponent extends ChessComponent{
             super(chessboardPoint, location, color, listener, size);
             initiateKingImage(color);
         }
-
+    public List<ChessboardPoint> points(ChessComponent[][] chessComponents){
+        ChessboardPoint source = getChessboardPoint();
+        List<ChessboardPoint> King = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (Math.abs(source.getX()-i)<=1&&Math.abs(source.getY()-j)<=1&&
+                        chessComponents[i][j].getChessColor()!=this.getChessColor()){
+                    ChessboardPoint n = new ChessboardPoint(i,j);
+                    King.add(n);
+                }
+            }
+        }
+        return King;
+    }
+    public boolean alarm (ChessComponent[][]chessComponents){
+        for (int i = 0; i < points(chessComponents).size(); i++) {
+            if (chessComponents[points(chessComponents).get(i).getX()][points(chessComponents).get(i).getY()] instanceof KingChessComponent ) {
+                return true;
+            }
+        }
+        return false;
+    }
         /**
          * 车棋子的移动规则
          *
@@ -74,19 +95,9 @@ public class KingChessComponent extends ChessComponent{
 
         @Override
         public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-            ChessboardPoint source = getChessboardPoint();
-            List<ChessboardPoint> King = new ArrayList<>();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (Math.abs(source.getX()-i)<=1&&Math.abs(source.getY()-j)<=1&&
-                            chessComponents[i][j].getChessColor()!=this.getChessColor()){
-                        ChessboardPoint n = new ChessboardPoint(i,j);
-                        King.add(n);
-                    }
-                }
-            }
-            for (int i = 0; i < King.size(); i++) {
-                if (destination.getX()==King.get(i).getX()&&destination.getY()==King.get(i).getY()){
+          
+            for (int i = 0; i < points(chessComponents).size(); i++) {
+                if (destination.getX()==points(chessComponents).get(i).getX()&&destination.getY()==points(chessComponents).get(i).getY()){
                     return true;
                 }
             }
@@ -98,18 +109,18 @@ public class KingChessComponent extends ChessComponent{
          *
          * @param g 可以类比于画笔
          */
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+       @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 //        g.drawImage(rookImage, 0, 0, getWidth() - 13, getHeight() - 20, this);
-            g.drawImage(kingImage, 0, 0, getWidth() , getHeight(), this);
+        g.drawImage(kingImage, 0, 0, getWidth() , getHeight(), this);
+        g.setColor(Color.BLACK);
+        if (isSelected()) { // Highlights the model if selected.
+            g.setColor(new Color(108,153,153,150));
+            g.fillRect(0, 0, getWidth() , getHeight());
+            g.drawImage(kingImage, -10, -10, getWidth()+20 , getHeight()+20, this);
             g.setColor(Color.BLACK);
-            if (isSelected()) { // Highlights the model if selected.
-                g.setColor(new Color(108,153,153,150));
-                g.fillRect(0, 0, getWidth() , getHeight());
-                g.drawImage(kingImage, -7, -7, getWidth()+14 , getHeight()+14, this);
-                g.setColor(Color.BLACK);
-            }
         }
     }
+}
 

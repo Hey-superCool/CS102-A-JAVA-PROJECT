@@ -23,7 +23,7 @@ public abstract class ChessComponent extends JComponent {
      */
 
 //    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
-    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
+    private static final Color[] BACKGROUND_COLORS = {new Color(255,255,255,150), new Color(0,0,0,150)};
     /**
      * handle click event
      */
@@ -83,7 +83,6 @@ public abstract class ChessComponent extends JComponent {
         another.setChessboardPoint(chessboardPoint1);
         another.setLocation(point1);
     }
-
     /**
      * @param e 响应鼠标监听事件
      *          <br>
@@ -123,11 +122,5 @@ public abstract class ChessComponent extends JComponent {
         g.setColor(squareColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
-    public boolean win(ChessboardPoint destination,ChessComponent[][]chessComponents){
-        if (chessComponents[destination.getX()][destination.getY()] instanceof KingChessComponent&&
-                chessComponents[destination.getX()][destination.getY()].getChessColor()!=this.getChessColor()){
-            return true;
-        }
-        return false;
-    }
+
 }

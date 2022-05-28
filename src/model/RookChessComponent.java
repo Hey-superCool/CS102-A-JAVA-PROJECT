@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这个类表示国际象棋里面的车
@@ -64,6 +66,83 @@ public class RookChessComponent extends ChessComponent {
         super(chessboardPoint, location, color, listener, size);
         initiateRookImage(color);
     }
+    public List<ChessboardPoint> points(ChessComponent[][] chessComponents){
+        ChessboardPoint source = getChessboardPoint();
+        List<ChessboardPoint> Rook = new ArrayList<>();
+        for (int i = 1; i < 8; i++) {
+            if (source.getX() + i <= 7) {
+                if (chessComponents[source.getX() + i ][source.getY()].getChessColor()==ChessColor.NONE){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() + i ,source.getY());
+                    Rook.add(n);
+                }
+                else if (chessComponents[source.getX() + i ][source.getY()].getChessColor()==this.getChessColor()){
+                    break;
+                }
+                else if (chessComponents[source.getX() + i ][source.getY()].getChessColor()!=this.getChessColor()){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() + i ,source.getY());
+                    Rook.add(n);
+                    break;
+                }
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            if (source.getY()-i>=0) {
+                if (chessComponents[source.getX()][source.getY()-i].getChessColor()==ChessColor.NONE){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() ,source.getY()-i);
+                    Rook.add(n);
+                }
+                else if (chessComponents[source.getX()][source.getY()-i].getChessColor()==this.getChessColor()){
+                    break;
+                }
+                else if (chessComponents[source.getX()][source.getY()-i].getChessColor()!=this.getChessColor()){
+                    ChessboardPoint n = new ChessboardPoint(source.getX(),source.getY()-i);
+                    Rook.add(n);
+                    break;
+                }
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            if (source.getX() -i >=0) {
+                if (chessComponents[source.getX() - i ][source.getY()] .getChessColor()==ChessColor.NONE){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() - i ,source.getY());
+                    Rook.add(n);
+                }
+                else if (chessComponents[source.getX() - i ][source.getY()].getChessColor()==this.getChessColor()){
+                    break;
+                }
+                else if (chessComponents[source.getX() - i ][source.getY()].getChessColor()!=this.getChessColor()){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() - i ,source.getY());
+                    Rook.add(n);
+                    break;
+                }
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            if (source.getY()+i<=7) {
+                if (chessComponents[source.getX() ][source.getY()+i].getChessColor()==ChessColor.NONE){
+                    ChessboardPoint n = new ChessboardPoint(source.getX() ,source.getY()+i);
+                    Rook.add(n);
+                }
+                else if (chessComponents[source.getX() ][source.getY()+i].getChessColor()==this.getChessColor()){
+                    break;
+                }
+                else if (chessComponents[source.getX()  ][source.getY()+i].getChessColor()!=this.getChessColor()){
+                    ChessboardPoint n = new ChessboardPoint(source.getX()  ,source.getY()+i);
+                    Rook.add(n);
+                    break;
+                }
+            }
+        }
+        return Rook;
+    }
+    public boolean alarm (ChessComponent[][]chessComponents){
+        for (int i = 0; i < points(chessComponents).size(); i++) {
+            if (chessComponents[points(chessComponents).get(i).getX()][points(chessComponents).get(i).getY()] instanceof KingChessComponent ) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 车棋子的移动规则
@@ -112,7 +191,7 @@ public class RookChessComponent extends ChessComponent {
         if (isSelected()) { // Highlights the model if selected.
             g.setColor(new Color(108,153,153,150));
             g.fillRect(0, 0, getWidth() , getHeight());
-            g.drawImage(rookImage, -7, -7, getWidth()+14 , getHeight()+14, this);
+            g.drawImage(rookImage, -10, -10, getWidth()+20 , getHeight()+20, this);
             g.setColor(Color.BLACK);
         }
     }
