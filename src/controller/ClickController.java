@@ -2,8 +2,12 @@ package controller;
 
 
 import model.ChessComponent;
+import model.KingChessComponent;
 import view.Chessboard;
+import view.ChessboardPoint;
 import view.GameOverFrame;
+
+import javax.swing.*;
 
 public class ClickController {
     private final Chessboard chessboard;
@@ -19,12 +23,27 @@ public class ClickController {
             if (handleFirst(chessComponent)) {
                 chessComponent.setSelected(true);
                 first = chessComponent;
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (first.canMoveTo(chessboard.getChessComponents(),new ChessboardPoint(i,j))){
+                            chessboard.getChessComponents()[i][j].setCanBeMovedTo(1);
+                            chessboard.getChessComponents()[i][j].repaint();
+                        }
+                    }
+                }
                 first.repaint();
             }
         } else {
             if (first == chessComponent) { // 再次点击取消选取
                 chessComponent.setSelected(false);
                 ChessComponent recordFirst = first;
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (first.canMoveTo(chessboard.getChessComponents(),new ChessboardPoint(i,j))){
+                            chessboard.getChessComponents()[i][j].repaint();
+                        }
+                    }
+                }
                 first = null;
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
@@ -33,11 +52,25 @@ public class ClickController {
                     GameOverFrame a = new GameOverFrame(500,500,chessboard.getCurrentColor());
                     a.setVisible(true);
                 }
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (first.canMoveTo(chessboard.getChessComponents(),new ChessboardPoint(i,j))){
+                            chessboard.getChessComponents()[i][j].repaint();
+                        }
+                    }
+                }
                 chessboard.swapChessComponents(first, chessComponent);
                 chessboard.swapColor();
                 chessboard.setViewCurrentPlayer(chessboard.getCurrentColor());
-
                 first.setSelected(false);
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        ChessComponent chessComponent1 = chessboard.getChessComponents()[i][j];
+                        if (chessComponent1.alarm(chessboard.getChessComponents())){
+                            JOptionPane.showMessageDialog(null,"王正在被攻击");
+                        }
+                    }
+                }
                 first = null;
             }
         }

@@ -13,6 +13,15 @@ import java.util.List;
 public class BishopChessComponent extends ChessComponent{
     private static Image BISHOP_WHITE;
     private static Image BISHOP_BLACK;
+    private int canBeMovedTo;
+
+    public int getCanBeMovedTo() {
+        return canBeMovedTo;
+    }
+
+    public void setCanBeMovedTo(int canBeMovedTo) {
+        this.canBeMovedTo = canBeMovedTo;
+    }
 
     /**
      * 车棋子对象自身的图片，是上面两种中的一种
@@ -154,6 +163,7 @@ public class BishopChessComponent extends ChessComponent{
         return false;
     }
 
+
     /**
      * 注意这个方法，每当窗体受到了形状的变化，或者是通知要进行绘图的时候，就会调用这个方法进行画图。
      *
@@ -170,6 +180,11 @@ public class BishopChessComponent extends ChessComponent{
             g.fillRect(0, 0, getWidth() , getHeight());
             g.drawImage(bishopImage, -10, -10, getWidth()+20 , getHeight()+20, this);
             g.setColor(Color.BLACK);
+        }
+        if (canBeMovedTo == 1){
+            g.setColor(new Color(191, 255, 113, 221));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            this.setCanBeMovedTo(0);
         }
     }
 }

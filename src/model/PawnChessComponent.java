@@ -11,6 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PawnChessComponent extends ChessComponent{
+    private int canBeMovedTo;
+
+    public int getCanBeMovedTo() {
+        return canBeMovedTo;
+    }
+
+    public void setCanBeMovedTo(int canBeMovedTo) {
+        this.canBeMovedTo = canBeMovedTo;
+    }
 
 
         /**
@@ -170,6 +179,11 @@ public class PawnChessComponent extends ChessComponent{
                 g.fillRect(0, 0, getWidth() , getHeight());
                 g.drawImage(pawnImage, -10, -10, getWidth()+20 , getHeight()+20, this);
                 g.setColor(Color.BLACK);
+            }
+            if (canBeMovedTo == 1){
+                g.setColor(new Color(191, 255, 113, 221));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                this.setCanBeMovedTo(0);
             }
         }
 

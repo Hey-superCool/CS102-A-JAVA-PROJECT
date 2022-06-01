@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -94,6 +93,7 @@ public class Chessboard extends JComponent {
         return chessComponents;
     }
 
+
     public ChessColor getCurrentColor() {
         return currentColor;
     }
@@ -122,13 +122,41 @@ public class Chessboard extends JComponent {
         chessComponents[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
         chessComponents[row2][col2] = chess2;
-        if (chess1 instanceof PawnChessComponent&&chess1.getChessboardPoint().getX()==7&&chess1.getChessColor()==ChessColor.BLACK){
+        if (chess1 instanceof PawnChessComponent && chess1.getChessboardPoint().getX() == 7 && chess1.getChessColor() == ChessColor.BLACK) {
             remove(chess1);
-            add(chess1=new QueenChessComponent(chess1.getChessboardPoint(),chess1.getLocation(),ChessColor.BLACK,clickController,CHESS_SIZE));
+            int sl = JOptionPane.showOptionDialog(null, "请选择要变成的棋子", "兵底升变", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"车", "象", "马","后"}, "后");
+
+            System.out.println(sl);
+            if (sl == 3) {
+                add(chess1 = new QueenChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.BLACK, clickController, CHESS_SIZE));
+            }
+            if (sl == 0) {
+                add(chess1 = new RookChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.BLACK, clickController, CHESS_SIZE));
+            }
+            if (sl == 1) {
+                add(chess1 = new BishopChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.BLACK, clickController, CHESS_SIZE));
+            }
+            if (sl == 2) {
+                add(chess1 = new KnightChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.BLACK, clickController, CHESS_SIZE));
+            }
         }
-        if (chess1 instanceof PawnChessComponent&&chess1.getChessboardPoint().getX()==0&&chess1.getChessColor()==ChessColor.WHITE){
+        if (chess1 instanceof PawnChessComponent && chess1.getChessboardPoint().getX() == 0 && chess1.getChessColor() == ChessColor.WHITE) {
             remove(chess1);
-            add(chess1=new QueenChessComponent(chess1.getChessboardPoint(),chess1.getLocation(),ChessColor.WHITE,clickController,CHESS_SIZE));
+            int sl = JOptionPane.showOptionDialog(null, "请选择要变成的棋子", "兵底升变", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"车", "象", "马","后"}, "后");
+
+            System.out.println(sl);
+            if (sl == 3) {
+                add(chess1 = new QueenChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.WHITE, clickController, CHESS_SIZE));
+            }
+            if (sl == 0) {
+                add(chess1 = new RookChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.WHITE, clickController, CHESS_SIZE));
+            }
+            if (sl == 1) {
+                add(chess1 = new BishopChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.WHITE, clickController, CHESS_SIZE));
+            }
+            if (sl == 2) {
+                add(chess1 = new KnightChessComponent(chess1.getChessboardPoint(), chess1.getLocation(), ChessColor.WHITE, clickController, CHESS_SIZE));
+            }
         }
         chess1.repaint();
         chess2.repaint();

@@ -39,6 +39,15 @@ public abstract class ChessComponent extends JComponent {
     private ChessboardPoint chessboardPoint;
     protected final ChessColor chessColor;
     private boolean selected;
+    private int canBeMovedTo;
+
+    public int getCanBeMovedTo() {
+        return canBeMovedTo;
+    }
+
+    public void setCanBeMovedTo(int canBeMovedTo) {
+        this.canBeMovedTo = canBeMovedTo;
+    }
 
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -121,6 +130,14 @@ public abstract class ChessComponent extends JComponent {
         Color squareColor = BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
         g.setColor(squareColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        if (canBeMovedTo == 1){
+            System.out.println("空棋子也想变绿");
+            g.setColor(new Color(191, 255, 113, 221));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            this.setCanBeMovedTo(0);
+        }
     }
+
+    public abstract boolean alarm(ChessComponent[][] chessComponents);
 
 }

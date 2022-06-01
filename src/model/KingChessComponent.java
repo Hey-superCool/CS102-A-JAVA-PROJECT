@@ -11,6 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KingChessComponent extends ChessComponent{
+    private int canBeMovedTo;
+
+    public int getCanBeMovedTo() {
+        return canBeMovedTo;
+    }
+
+    public void setCanBeMovedTo(int canBeMovedTo) {
+        this.canBeMovedTo = canBeMovedTo;
+    }
 
         /**
          * 黑车和白车的图片，static使得其可以被所有车对象共享
@@ -121,6 +130,11 @@ public class KingChessComponent extends ChessComponent{
             g.drawImage(kingImage, -10, -10, getWidth()+20 , getHeight()+20, this);
             g.setColor(Color.BLACK);
         }
+           if (canBeMovedTo == 1){
+               g.setColor(new Color(191, 255, 113, 221));
+               g.fillRect(0, 0, getWidth(), getHeight());
+               this.setCanBeMovedTo(0);
+           }
     }
 }
 
